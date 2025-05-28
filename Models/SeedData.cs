@@ -31,12 +31,12 @@ namespace Music_Store_Warehouse_App.Models
 
                 // 2) FeatureDefinitions
                 context.FeatureDefinition.AddRange(
-                    new FeatureDefinition { Type = Type.Guitar , Name = "Ilość strun" },
-                    new FeatureDefinition { Type = Type.Guitar, Name = "Materiał korpusu" },
-                    new FeatureDefinition { Type = Type.Drums, Name = "Typ naciągu" },
-                    new FeatureDefinition { Type = Type.Drums, Name = "Wielkość bębna" },
-                    new FeatureDefinition { Type = Type.Piano, Name = "Wykończenie" },
-                    new FeatureDefinition { Type = Type.Piano, Name = "Funkcja wyciszania" }
+                    new FeatureDefinition { Type = FType.Gitary , Name = "Ilość strun" },
+                    new FeatureDefinition { Type = FType.Gitary, Name = "Materiał korpusu" },
+                    new FeatureDefinition { Type = FType.Perkusje, Name = "Typ naciągu" },
+                    new FeatureDefinition { Type = FType.Perkusje, Name = "Wielkość bębna" },
+                    new FeatureDefinition { Type = FType.Pianina, Name = "Wykończenie" },
+                    new FeatureDefinition { Type = FType.Pianina, Name = "Funkcja wyciszania" }
                 );
                 context.SaveChanges();
 

@@ -1,4 +1,6 @@
-﻿namespace Music_Store_Warehouse_App.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+namespace Music_Store_Warehouse_App.Models
 {
     public class Address
     {
@@ -9,6 +11,7 @@
         public string PostalCode { get; set; }
 
         // Nawigacja odwrotna
+        [ValidateNever]
         public Supplier Supplier { get; set; }
     }
 
