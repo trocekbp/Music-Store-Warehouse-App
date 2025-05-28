@@ -9,7 +9,7 @@
 
         public int FeatureDefinitionId { get; set; }
         public FeatureDefinition FeatureDefinition { get; set; }
-
+         
         public string Value { get; set; } // np. "Olcha"
     }
 
