@@ -31,9 +31,12 @@ namespace Music_Store_Warehouse_App.Models
 
                 // 2) FeatureDefinitions
                 context.FeatureDefinition.AddRange(
-                    new FeatureDefinition {  Name = "Ilość strun" },
-                    new FeatureDefinition { Name = "Materiał korpusu" },
-                    new FeatureDefinition { Name = "Typ naciągu" }
+                    new FeatureDefinition { Type = Type.Guitar , Name = "Ilość strun" },
+                    new FeatureDefinition { Type = Type.Guitar, Name = "Materiał korpusu" },
+                    new FeatureDefinition { Type = Type.Drums, Name = "Typ naciągu" },
+                    new FeatureDefinition { Type = Type.Drums, Name = "Wielkość bębna" },
+                    new FeatureDefinition { Type = Type.Piano, Name = "Wykończenie" },
+                    new FeatureDefinition { Type = Type.Piano, Name = "Funkcja wyciszania" }
                 );
                 context.SaveChanges();
 

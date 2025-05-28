@@ -75,6 +75,9 @@ namespace Music_Store_Warehouse_App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("FeatureDefinitionId");
 
                     b.ToTable("FeatureDefinition");

@@ -11,7 +11,7 @@ using Music_Store_Warehouse_App.Data;
 namespace Music_Store_Warehouse_App.Migrations
 {
     [DbContext(typeof(Music_Store_Warehouse_AppContext))]
-    [Migration("20250528185607_Initialize")]
+    [Migration("20250528192843_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />
@@ -77,6 +77,9 @@ namespace Music_Store_Warehouse_App.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("FeatureDefinitionId");
 
