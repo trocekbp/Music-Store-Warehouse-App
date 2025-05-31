@@ -3,25 +3,28 @@
 }
 
 <div class="jumbotron">
-    <h1>Contoso University</h1>
+    <h1 class="mb-5">Zarządzanie magazynem muzycznym</h1>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>Welcome to Contoso University</h2>
+        <h5>Witaj w aplikacji służącej do zarządzania asortymentem muzycznym</h5>
         <p>
-            Contoso University is a sample application that
-            demonstrates how to use Entity Framework Core in an
-            ASP.NET Core MVC web application.
+            To prosta aplikacja umożliwiająca dodawanie i zarządzanie dostawcami oraz artykułami z branży muzycznej.
         </p>
     </div>
-    <div class="col-md-4">
-        <h2>Build it from scratch</h2>
-        <p>You can build the application by following the steps in a series of tutorials.</p>
-        <p><a class="btn btn-default" href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html">See the tutorial &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Download it</h2>
-        <p>You can download the completed project from GitHub.</p>
-        <p><a class="btn btn-default" href="https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-mvc/intro/samples/5cu-final">See project source code &raquo;</a></p>
-    </div>
+    <a href="/Instruments"
+       class="col-md-4 d-block text-dark text-decoration-none">
+       <div class="kafelek"> 
+        <h2>Asortyment</h2>
+        <p>Dodawaj, wydawaj oraz edytuj instrumenty przechowywane w magazynie.</p>
+        </div>
+    </a>
+
+    <a href="/Suppliers"
+       class="col-md-4 d-block text-dark text-decoration-none">
+        <div class="kafelek">
+        <h2>Dostawcy</h2>
+        <p>Zarządzaj bazą dostawców.</p>
+        </div>
+    </a>
 </div>
