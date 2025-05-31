@@ -3,7 +3,11 @@
 
 <h1>Dodaj nowy instrument</h1>
 
+
 <form method="post" asp-action="Create">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
     @* Główne pola Instrument: *@
     <div class="form-row">
         <div class="form-group col-md-6">
@@ -13,7 +17,7 @@
         </div>
         <div class="form-group col-md-6">
             <label asp-for="Price"></label>
-            <input asp-for="Price" class="form-control" />
+            <input asp-for="Price" class="form-control" type="number"/>
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
     </div>
@@ -59,28 +63,28 @@
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
-
-    @*
+                @*
       Dwa przyciski: 
       - jeden o nazwie "ShowFeatures" (przeładowuje widok cech),
       - drugi o nazwie "SaveInstrument" (zapisuje do bazy).
     *@
-    <div class="mb-4">
-        <button type="submit"
-                name="action"
-                value="ShowFeatures"
-                class="btn btn-secondary">
-            Pokaż cechy
-        </button>
+                <div class="mb-2 mt-4">
+                    <button type="submit"
+                            name="action"
+                            value="ShowFeatures"
+                            class="btn btn-secondary">
+                        Pokaż cechy
+                    </button>
 
-        <button type="submit"
-                name="action"
-                value="SaveInstrument"
-                class="btn btn-primary">
-            Zapisz instrument
-        </button>
+                    <button type="submit"
+                            name="action"
+                            value="SaveInstrument"
+                            class="btn btn-primary">
+                        Zapisz instrument
+                    </button>
+                </div>
     </div>
-
+    <div class="col-md-6">
     @* Jeżeli w ViewBag jest lista FeatureDefinitions, wyświetlamy tabelę cech *@
     @if (ViewBag.FeatureDefinitions is List<FeatureDefinition> feats && feats.Any())
     {
@@ -113,7 +117,8 @@
             </tbody>
         </table>
     }
-
+            </div>
+    </div>
 </form>
 <div>
     <a asp-action="Index">Powrót</a>

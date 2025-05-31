@@ -62,7 +62,8 @@ namespace Music_Store_Warehouse_App.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            Instrument instrument,
+            [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,Quantity,SupplierId,CategoryId")] Instrument instrument, //ważne BIND - aby nie przekazywać za dużo danych
+
             string action,                  // "ShowFeatures" lub "SaveInstrument"
             [FromForm] IList<InstrumentFeature> InstrumentFeatures)
         {
@@ -162,7 +163,7 @@ namespace Music_Store_Warehouse_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,SupplierId,CategoryId")] Instrument instrument)
+        public async Task<IActionResult> Edit(int id, [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,Quantity,SupplierId,CategoryId")] Instrument instrument)
         {
             if (id != instrument.InstrumentId)
             {

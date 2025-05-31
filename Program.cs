@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Music_Store_Warehouse_App.Data;
 using Music_Store_Warehouse_App.Models;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Music_Store_Warehouse_AppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Music_Store_Warehouse_AppContext") ?? throw new InvalidOperationException("Connection string 'Music_Store_Warehouse_AppContext' not found.")));
@@ -10,6 +12,7 @@ builder.Services.AddDbContext<Music_Store_Warehouse_AppContext>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 // -- Seed Data --
 using (var scope = app.Services.CreateScope())
@@ -38,6 +41,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Instruments}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 
 
 app.Run();
