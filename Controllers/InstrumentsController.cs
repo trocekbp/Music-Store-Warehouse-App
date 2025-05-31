@@ -49,57 +49,91 @@ namespace Music_Store_Warehouse_App.Controllers
 
         // GET: Instruments/Create
         [HttpGet]
-        public IActionResult Create(int? categoryId)
+        public IActionResult Create()
         {
-            // Przygotuj dropdowny dostawców i kategorii
-            ViewBag.SupplierList = new SelectList(_context.Supplier, "SupplierId", "Name");
-            ViewBag.CategoryList = new SelectList(_context.Category, "CategoryId", "Name");
-
-            // Jeśli wybrano kategorię, załaduj odpowiadające FeatureDefinition
-            if (categoryId.HasValue)
-            {
-                var cat = _context.Category.Find(categoryId.Value);
-                if (cat != null)
-                {
-                    var typeEnum = Enum.Parse<FType>(cat.Name, ignoreCase: true); //Parsowanie kategorii na enum kiedyś zamienię to na id kategorii lub category name żeby było prościej
-
-                    ViewBag.FeatureDefinitions = _context.FeatureDefinition
-                        .Where(f => f.Type == typeEnum)
-                        .ToList();
-                }
-            }
-
-            // Utwórz "pusty" obiekt Instrument, ewentualnie z wstępnie ustawionym CategoryId
-            var model = new Instrument();
-            if (categoryId.HasValue) model.CategoryId = categoryId.Value;
-            return View(model);
+            PrzygotujViewBagi();
+            return View(new Instrument());
         }
 
         // POST: Instruments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Instrument instrument)
+        public async Task<IActionResult> Create(
+            Instrument instrument,
+            string action,                  // "ShowFeatures" lub "SaveInstrument"
+            [FromForm] IList<InstrumentFeature> InstrumentFeatures)
         {
-            // Zanim zwrócisz widok z błędami, pamiętaj o ponownym wypełnieniu ViewBag‐ów
-            ViewBag.SupplierList = new SelectList(_context.Supplier, "SupplierId", "Name");
-            ViewBag.CategoryList = new SelectList(_context.Category, "CategoryId", "Name");
-            if (instrument.CategoryId != 0)
+            // Zawsze przygotowujemy ViewBag dropdownów, bo widok ich potrzebuje
+            PrzygotujViewBagi();
+
+            // Jeżeli użytkownik wcisnął „Pokaż cechy”
+            if (action == "ShowFeatures")
             {
-                var cat = _context.Category.Find(instrument.CategoryId);
-                var typeEnum = Enum.Parse<FType>(cat.Name, ignoreCase: true);
-                ViewBag.FeatureDefinitions = _context.FeatureDefinition
-                    .Where(f => f.Type == typeEnum)
-                    .ToList();
+                // Upewnijmy się przynajmniej, że wybrano kategorię
+                if (instrument.CategoryId == 0)
+                {
+                    ModelState.AddModelError(nameof(instrument.CategoryId), "Kategoria jest wymagana, aby wyświetlić cechy.");
+                }
+                else
+                {
+                    // Jeżeli jest wartość CategoryId, ładujemy od razu cechy – bez sprawdzania pozostałych błędów
+                    var cat = _context.Category.Find(instrument.CategoryId);
+                    if (cat != null)
+                    {
+                        var typeEnum = Enum.Parse<FType>(cat.Name, ignoreCase: true);
+                        ViewBag.FeatureDefinitions = _context.FeatureDefinition
+                            .Where(f => f.Type == typeEnum)
+                            .ToList();
+                    }
+                }
+
+                // Zwracamy widok z aktualnym modelem, nawet jeśli np. Name lub Price są puste.
+                // Gdy wracamy tym View(instrument), wszystkie wpisane dotąd pola w formularzu będą w polach <input asp-for="…"/>,
+                // a ViewBag.FeatureDefinitions wyświetli tabelę cech (o ile CategoryId != 0).
+                return View(instrument);
             }
 
-            if (!ModelState.IsValid)
-                return View(instrument);
+            // Jeżeli użytkownik wcisnął „Zapisz instrument”
+            else if (action == "SaveInstrument")
+            {
+                // Przypisz z POST-a listę cech (może być pusta, jeżeli nie było tabeli)
+                instrument.InstrumentFeatures = InstrumentFeatures;
 
-            // instrument.InstrumentFeatures zostanie uzupełnione z inputów
-            _context.Add(instrument);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                // Teraz wykonujemy normalną walidację całego modelu
+                if (!ModelState.IsValid)
+                {
+                    // Aby tabela cech nie zniknęła, musimy znów załadować FeatureDefinitions
+                    if (instrument.CategoryId != 0)
+                    {
+                        var cat = _context.Category.Find(instrument.CategoryId);
+                        var typeEnum = Enum.Parse<FType>(cat.Name, ignoreCase: true);
+                        ViewBag.FeatureDefinitions = _context.FeatureDefinition
+                            .Where(f => f.Type == typeEnum)
+                            .ToList();
+                    }
+                    return View(instrument);
+                }
+
+                // Jeśli ModelState jest OK – zapisujemy do bazy:
+                _context.Add(instrument);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Jeśli action nie został przekazany (lub ma nietypową wartość), po prostu wyświetlamy formularz
+            return View(instrument);
         }
+
+
+        private void PrzygotujViewBagi()
+        {
+            ViewBag.SupplierList = new SelectList(
+                _context.Supplier, "SupplierId", "Name");
+
+            ViewBag.CategoryList = new SelectList(
+                _context.Category, "CategoryId", "Name");
+        }
+
 
 
         // GET: Instruments/Edit/5

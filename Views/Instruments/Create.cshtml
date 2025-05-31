@@ -3,25 +3,8 @@
 
 <h1>Dodaj nowy instrument</h1>
 
-<!-- 1) Formularz GET – wybór kategorii i "odświeżenie" widoku cech -->
-<form method="get" asp-action="Create">
-    <div class="form-group">
-        <label>Kategoria</label>
-        <select asp-for="CategoryId"
-                asp-items="ViewBag.CategoryList"
-                class="form-control">
-            <option value="">— wybierz —</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-secondary mb-4">
-        Pokaż cechy
-    </button>
-</form>
-
-<!-- 2) Formularz POST – pełne dane instrumentu + cechy -->
 <form method="post" asp-action="Create">
-    <input type="hidden" asp-for="CategoryId" />
-
+    @* Główne pola Instrument: *@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label asp-for="Name"></label>
@@ -67,18 +50,55 @@
         </select>
     </div>
 
-    @* Jeżeli ViewBag.FeatureDefinitions istnieje i ma elementy, wypisz je *@
+    <div class="form-group">
+        <label asp-for="CategoryId">Kategoria</label>
+        <select asp-for="CategoryId"
+                asp-items="ViewBag.CategoryList"
+                class="form-control">
+            <option value="">— wybierz —</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    @*
+      Dwa przyciski: 
+      - jeden o nazwie "ShowFeatures" (przeładowuje widok cech),
+      - drugi o nazwie "SaveInstrument" (zapisuje do bazy).
+    *@
+    <div class="mb-4">
+        <button type="submit"
+                name="action"
+                value="ShowFeatures"
+                class="btn btn-secondary">
+            Pokaż cechy
+        </button>
+
+        <button type="submit"
+                name="action"
+                value="SaveInstrument"
+                class="btn btn-primary">
+            Zapisz instrument
+        </button>
+    </div>
+
+    @* Jeżeli w ViewBag jest lista FeatureDefinitions, wyświetlamy tabelę cech *@
     @if (ViewBag.FeatureDefinitions is List<FeatureDefinition> feats && feats.Any())
     {
         <h4 class="mt-4">Cechy szczegółowe</h4>
         <table class="table table-sm">
-            <thead><tr><th>Nazwa</th><th>Wartość</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Nazwa cechy</th>
+                    <th>Wartość</th>
+                </tr>
+            </thead>
             <tbody>
                 @for (int i = 0; i < feats.Count; i++)
                 {
                     <tr>
                         <td>
                             @feats[i].Name
+                            @* ukryte pole z FeatureDefinitionId *@
                             <input type="hidden"
                                    name="InstrumentFeatures[@i].FeatureDefinitionId"
                                    value="@feats[i].FeatureDefinitionId" />
@@ -94,7 +114,6 @@
         </table>
     }
 
-    <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>
 
 @section Scripts {
