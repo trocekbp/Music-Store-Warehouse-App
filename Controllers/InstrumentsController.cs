@@ -38,7 +38,10 @@ namespace Music_Store_Warehouse_App.Controllers
             var instrument = await _context.Instrument
                 .Include(i => i.Category)
                 .Include(i => i.Supplier)
+                .Include(i => i.InstrumentFeatures)
+                    .ThenInclude(ifeat => ifeat.FeatureDefinition) // ThenInclude - jeszcze dołączamy definicje cech
                 .FirstOrDefaultAsync(m => m.InstrumentId == id);
+
             if (instrument == null)
             {
                 return NotFound();
@@ -202,6 +205,7 @@ namespace Music_Store_Warehouse_App.Controllers
             var instrument = await _context.Instrument
                 .Include(i => i.Category)
                 .Include(i => i.Supplier)
+                .Include(i => i.InstrumentFeatures)
                 .FirstOrDefaultAsync(m => m.InstrumentId == id);
             if (instrument == null)
             {
@@ -216,7 +220,7 @@ namespace Music_Store_Warehouse_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instrument = await _context.Instrument.FindAsync(id);
+            var instrument = await _context.Instrument.FindAsync(id); //instrument features też się usunie poprzez delete Cascade w DB (konfiguracja w pliku db context)
             if (instrument != null)
             {
                 _context.Instrument.Remove(instrument);

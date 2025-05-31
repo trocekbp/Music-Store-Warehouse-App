@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Music_Store_Warehouse_App.Models;
@@ -21,6 +22,15 @@ namespace Music_Store_Warehouse_App.Data
         public DbSet<FeatureDefinition> FeatureDefinition { get; set; } = default!;
         public DbSet<InstrumentFeature> InstrumentFeature { get; set; } = default!;
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder                //kaskadowe usuwanie dzieci przy usunięciu rodzica, czyli cech instrumentu
+                .Entity<Instrument>()
+                .HasMany(i => i.InstrumentFeatures)
+                .WithOne(f => f.Instrument)
+                .HasForeignKey(f => f.InstrumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 
 }
