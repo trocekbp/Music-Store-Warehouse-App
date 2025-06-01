@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 
 namespace Music_Store_Warehouse_App.Models
 {
@@ -13,7 +14,7 @@ namespace Music_Store_Warehouse_App.Models
         public int FeatureDefinitionId { get; set; }
         [ValidateNever]
         public FeatureDefinition FeatureDefinition { get; set; }
-         
+
         public string Value { get; set; } // np. "Olcha"
     }
 

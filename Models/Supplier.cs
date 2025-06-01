@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Diagnostics.Metrics;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Music_Store_Warehouse_App.Models
 {
@@ -7,7 +9,13 @@ namespace Music_Store_Warehouse_App.Models
     {
         public int SupplierId { get; set; }
 
+        [Required(ErrorMessage = "Nazwa dostawcy jest wymagana.")]
+        [StringLength(100, ErrorMessage = "Nazwa nie może mieć więcej niż 100 znaków.")]
+        [DisplayName("Nazwa")]
         public string Name { get; set; }
+
+        [EmailAddress(ErrorMessage = "Nieprawidłowy format adresu e-mail.")]
+        [DisplayName("E-mail")]
         public string Email { get; set; }
 
         // Nawigacja
@@ -17,5 +25,4 @@ namespace Music_Store_Warehouse_App.Models
         [ValidateNever]
         public ICollection<Instrument> Instruments { get; set; }
     }
-
 }

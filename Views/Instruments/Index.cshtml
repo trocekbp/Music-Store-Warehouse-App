@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Music_Store_Warehouse_App.Models.Instrument>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Asortyment";
 }
 
-<h1>Index</h1>
+<h1>Asortyment</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-sm btn-success">Dodaj</a>
 </p>
 <table class="table">
     <thead>
@@ -67,9 +67,9 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.InstrumentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InstrumentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InstrumentId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-primary">Edytuj</a> |
+                    <a asp-action="Details" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-info">Szczegóły</a> |
+                    <a asp-action="Delete" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-danger">Usuń</a>
             </td>
         </tr>
 }

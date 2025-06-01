@@ -1,10 +1,10 @@
 ﻿@model Music_Store_Warehouse_App.Models.Instrument
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edycja";
 }
 
-<h1>Edit</h1>
+<h1>Edycja</h1>
 
 <h4>Instrument</h4>
 <hr />
@@ -56,7 +56,7 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary mt-3 mb-2" />
             </div>
         </div>
 
@@ -115,7 +115,7 @@
 
 
 <div>
-    <a asp-action="Index">Powrót</a>
+    <a asp-action="Index" class="btn btn-sm btn-secondary">Powrót</a>
 </div>
 
 @section Scripts {

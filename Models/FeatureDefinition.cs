@@ -1,4 +1,6 @@
-﻿namespace Music_Store_Warehouse_App.Models
+﻿using System.ComponentModel;
+
+namespace Music_Store_Warehouse_App.Models
 {
     public enum FType //Feature Type - Typ na podstawie jego dobieramy właściwości dla odpowiednich instrumentów
     {
@@ -12,6 +14,7 @@
         public int FeatureDefinitionId { get; set; }
 
         public FType Type { get; set; } //Typ 
+        [DisplayName("Cecha")]
         public string Name { get; set; } // np. "Ilość strun"
        
         public ICollection<InstrumentFeature> InstrumentFeatures { get; set; }
