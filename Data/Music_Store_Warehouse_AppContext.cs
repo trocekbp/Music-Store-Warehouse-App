@@ -24,13 +24,22 @@ namespace Music_Store_Warehouse_App.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder                //kaskadowe usuwanie dzieci przy usunięciu rodzica, czyli cech instrumentu
+            modelBuilder      //kaskadowe usuwanie dzieci przy usunięciu rodzica, czyli cech instrumentu
                 .Entity<Instrument>()
                 .HasMany(i => i.InstrumentFeatures)
                 .WithOne(f => f.Instrument)
                 .HasForeignKey(f => f.InstrumentId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //kaskadowe usuwanie adresów wraz z dostawcą 
+            modelBuilder
+                 .Entity<Supplier>()
+                 .HasOne(s => s.Address)
+                 .WithOne(a => a.Supplier)
+                 .HasForeignKey<Address>(a => a.SupplierId)
+                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
-
 }
+
+

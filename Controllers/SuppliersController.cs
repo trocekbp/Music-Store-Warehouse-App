@@ -10,22 +10,23 @@ using Music_Store_Warehouse_App.Models;
 
 namespace Music_Store_Warehouse_App.Controllers
 {
-    public class FeatureDefinitionsController : Controller
+    public class SuppliersController : Controller
     {
         private readonly Music_Store_Warehouse_AppContext _context;
 
-        public FeatureDefinitionsController(Music_Store_Warehouse_AppContext context)
+        public SuppliersController(Music_Store_Warehouse_AppContext context)
         {
             _context = context;
         }
 
-        // GET: FeatureDefinitions
+        // GET: Suppliers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FeatureDefinition.ToListAsync());
+            var music_Store_Warehouse_AppContext = _context.Supplier.Include(s => s.Address);
+            return View(await music_Store_Warehouse_AppContext.ToListAsync());
         }
 
-        // GET: FeatureDefinitions/Details/5
+        // GET: Suppliers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,41 @@ namespace Music_Store_Warehouse_App.Controllers
                 return NotFound();
             }
 
-            var featureDefinition = await _context.FeatureDefinition
-                .FirstOrDefaultAsync(m => m.FeatureDefinitionId == id);
-            if (featureDefinition == null)
+            var supplier = await _context.Supplier
+                .Include(s => s.Address)
+                .FirstOrDefaultAsync(m => m.SupplierId == id);
+            if (supplier == null)
             {
                 return NotFound();
             }
 
-            return View(featureDefinition);
+            return View(supplier);
         }
 
-        // GET: FeatureDefinitions/Create
+        // GET: Suppliers/Create
         public IActionResult Create()
-        {
+        { 
             return View();
         }
 
-        // POST: FeatureDefinitions/Create
+        // POST: Suppliers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FeatureDefinitionId,Name")] FeatureDefinition featureDefinition)
+        public async Task<IActionResult> Create([Bind("Name,Email," +
+            "Adress.Street,Adress.City,Adress.PostalCode")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(featureDefinition);
+                _context.Add(supplier);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(featureDefinition);
+            return View(supplier);
         }
 
-        // GET: FeatureDefinitions/Edit/5
+        // GET: Suppliers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +76,23 @@ namespace Music_Store_Warehouse_App.Controllers
                 return NotFound();
             }
 
-            var featureDefinition = await _context.FeatureDefinition.FindAsync(id);
-            if (featureDefinition == null)
+            var supplier = await _context.Supplier.FindAsync(id);
+            if (supplier == null)
             {
                 return NotFound();
-            }
-            return View(featureDefinition);
+            }   
+            return View(supplier);
         }
 
-        // POST: FeatureDefinitions/Edit/5
+        // POST: Suppliers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FeatureDefinitionId,Name")] FeatureDefinition featureDefinition)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Email," +
+            "Adress.Street,Adress.City,Adress.PostalCode")] Supplier supplier)
         {
-            if (id != featureDefinition.FeatureDefinitionId)
+            if (id != supplier.SupplierId)
             {
                 return NotFound();
             }
@@ -97,12 +101,12 @@ namespace Music_Store_Warehouse_App.Controllers
             {
                 try
                 {
-                    _context.Update(featureDefinition);
+                    _context.Update(supplier);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeatureDefinitionExists(featureDefinition.FeatureDefinitionId))
+                    if (!SupplierExists(supplier.SupplierId))
                     {
                         return NotFound();
                     }
@@ -113,10 +117,10 @@ namespace Music_Store_Warehouse_App.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(featureDefinition);
+            return View(supplier);
         }
 
-        // GET: FeatureDefinitions/Delete/5
+        // GET: Suppliers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +128,35 @@ namespace Music_Store_Warehouse_App.Controllers
                 return NotFound();
             }
 
-            var featureDefinition = await _context.FeatureDefinition
-                .FirstOrDefaultAsync(m => m.FeatureDefinitionId == id);
-            if (featureDefinition == null)
+            var supplier = await _context.Supplier
+                .Include(s => s.Address)
+                .FirstOrDefaultAsync(m => m.SupplierId == id);
+            if (supplier == null)
             {
                 return NotFound();
             }
 
-            return View(featureDefinition);
+            return View(supplier);
         }
 
-        // POST: FeatureDefinitions/Delete/5
+        // POST: Suppliers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var featureDefinition = await _context.FeatureDefinition.FindAsync(id);
-            if (featureDefinition != null)
+            var supplier = await _context.Supplier.FindAsync(id);
+            if (supplier != null)
             {
-                _context.FeatureDefinition.Remove(featureDefinition);
+                _context.Supplier.Remove(supplier);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FeatureDefinitionExists(int id)
+        private bool SupplierExists(int id)
         {
-            return _context.FeatureDefinition.Any(e => e.FeatureDefinitionId == id);
+            return _context.Supplier.Any(e => e.SupplierId == id);
         }
     }
 }

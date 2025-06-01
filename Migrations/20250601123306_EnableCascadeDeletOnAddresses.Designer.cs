@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Music_Store_Warehouse_App.Data;
 
@@ -10,9 +11,11 @@ using Music_Store_Warehouse_App.Data;
 namespace Music_Store_Warehouse_App.Migrations
 {
     [DbContext(typeof(Music_Store_Warehouse_AppContext))]
-    partial class Music_Store_Warehouse_AppContextModelSnapshot : ModelSnapshot
+    [Migration("20250601123306_EnableCascadeDeletOnAddresses")]
+    partial class EnableCascadeDeletOnAddresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

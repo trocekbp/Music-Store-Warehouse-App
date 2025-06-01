@@ -39,18 +39,18 @@ namespace Music_Store_Warehouse_App.Models
                     new FeatureDefinition { Type = FType.Pianina, Name = "Funkcja wyciszania" }
                 );
                 context.SaveChanges();
-
-                // 3) Adresy dostawców
-                context.Address.AddRange(
-                    new Address { Street = "ul. Muzyczna 1", City = "Warszawa", PostalCode = "00-001" },
-                    new Address { Street = "ul. Gitarska 5", City = "Kraków", PostalCode = "30-002" }
+    
+                // 3) Dostawcy
+                context.Supplier.AddRange(
+                    new Supplier { Name = "MuzyczneABC", Email = "kontakt@muzyczneabc.pl" },
+                    new Supplier { Name = "GitaraPro", Email = "sprzedaz@gitarapro.pl" }
                 );
                 context.SaveChanges();
 
-                // 4) Dostawcy
-                context.Supplier.AddRange(
-                    new Supplier { Name = "MuzyczneABC", Email = "kontakt@muzyczneabc.pl", AddressId = 1 },
-                    new Supplier { Name = "GitaraPro", Email = "sprzedaz@gitarapro.pl", AddressId = 2 }
+                // 3) Adresy dostawców
+                context.Address.AddRange(
+                    new Address { Street = "ul. Muzyczna 1", City = "Warszawa", PostalCode = "00-001", SupplierId = 1 },
+                    new Address { Street = "ul. Gitarska 5", City = "Kraków", PostalCode = "30-002", SupplierId = 2 }
                 );
                 context.SaveChanges();
 

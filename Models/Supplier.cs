@@ -10,9 +10,6 @@ namespace Music_Store_Warehouse_App.Models
         public string Name { get; set; }
         public string Email { get; set; }
 
-        // Klucz obcy
-        public int AddressId { get; set; }
-
         // Nawigacja
         [ValidateNever]
         public Address Address { get; set; }
