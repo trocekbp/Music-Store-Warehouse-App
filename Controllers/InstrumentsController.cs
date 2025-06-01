@@ -23,10 +23,11 @@ namespace Music_Store_Warehouse_App.Controllers
 
         // GET: Instruments
         public async Task<IActionResult> Index(
-                                         string sortOrder,
-                                         string currentFilter,
-                                         string searchString,
-                                         int? pageNumber)
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber,
+            int? categoryId)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -42,12 +43,28 @@ namespace Music_Store_Warehouse_App.Controllers
                 searchString = currentFilter;
             }
 
+            var categories = await _context.Category
+                           .OrderBy(c => c.Name)
+                           .ToListAsync();
+
+
+            ViewData["CategoryList"] = new SelectList(categories, "CategoryId", "Name", categoryId);
+            ViewData["CurrentCategory"] = categoryId; // by wiedzieć, która opcja ma być selected
+
             IQueryable<Instrument> instruments = _context.Instrument.Include(i => i.Category).Include(i => i.Supplier);
 
+            // --- Filtrowanie po wyszukiwanej frazie ---
             if (!String.IsNullOrEmpty(searchString))
             {
-                instruments = instruments.Where(s => s.Name.Contains(searchString)
-                                       || s.Supplier.Name.Contains(searchString));
+                instruments = instruments.Where(s =>
+                    s.Name.Contains(searchString) ||
+                    s.Supplier.Name.Contains(searchString));
+            }
+
+            // --- Filtrowanie po kategorii, jeśli użytkownik wybrał categoryId ---
+            if (categoryId.HasValue)
+            {
+                instruments = instruments.Where(i => i.CategoryId == categoryId.Value);
             }
 
             switch (sortOrder)
