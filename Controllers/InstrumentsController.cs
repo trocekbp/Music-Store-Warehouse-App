@@ -54,7 +54,7 @@ namespace Music_Store_Warehouse_App.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            PrzygotujViewBagi();
+            PrepareViewBags();
             return View(new Instrument());
         }
 
@@ -63,12 +63,11 @@ namespace Music_Store_Warehouse_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,Quantity,SupplierId,CategoryId")] Instrument instrument, //ważne BIND - aby nie przekazywać za dużo danych
-
             string action,                  // "ShowFeatures" lub "SaveInstrument"
             [FromForm] IList<InstrumentFeature> InstrumentFeatures)
         {
             // Zawsze przygotowujemy ViewBag dropdownów, bo widok ich potrzebuje
-            PrzygotujViewBagi();
+            PrepareViewBags();
 
             // Jeżeli użytkownik wcisnął „Pokaż cechy”
             if (action == "ShowFeatures")
@@ -129,7 +128,7 @@ namespace Music_Store_Warehouse_App.Controllers
         }
 
 
-        private void PrzygotujViewBagi()
+        private void PrepareViewBags()
         {
             ViewBag.SupplierList = new SelectList(
                 _context.Supplier, "SupplierId", "Name");
@@ -148,7 +147,12 @@ namespace Music_Store_Warehouse_App.Controllers
                 return NotFound();
             }
 
-            var instrument = await _context.Instrument.FindAsync(id);
+            var instrument = await _context.Instrument
+                .Include(i => i.Category)
+                .Include(i => i.Supplier)
+                .Include(i => i.InstrumentFeatures)
+                    .ThenInclude(ifeat => ifeat.FeatureDefinition) // ThenInclude - jeszcze dołączamy definicje cech
+                .FirstOrDefaultAsync(m => m.InstrumentId == id);
             if (instrument == null)
             {
                 return NotFound();
@@ -163,7 +167,7 @@ namespace Music_Store_Warehouse_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,Quantity,SupplierId,CategoryId")] Instrument instrument)
+        public async Task<IActionResult> Edit(int id, [Bind("InstrumentId,Name,Price,Description,EAN,SKU,SerialNumber,Quantity,SupplierId,CategoryId,InstrumentFeatures")] Instrument instrument)
         {
             if (id != instrument.InstrumentId)
             {
