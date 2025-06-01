@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Music_Store_Warehouse_App.Data;
-using Music_Store_Warehouse_App.Models;
 using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Music_Store_Warehouse_AppContext>(options =>

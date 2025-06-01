@@ -7,6 +7,8 @@ namespace Music_Store_Warehouse_App.Models
         Gitary,
         Perkusje,
         Pianina,
+        Skrzypce,
+        Dęte,
         Inne        //narazie inne są nieobsłużone
     }
     public class FeatureDefinition

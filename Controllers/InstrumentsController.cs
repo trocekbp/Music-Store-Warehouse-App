@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Music_Store_Warehouse_App.Data;
 using Music_Store_Warehouse_App.Models;
@@ -21,10 +22,52 @@ namespace Music_Store_Warehouse_App.Controllers
         }
 
         // GET: Instruments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+                                         string sortOrder,
+                                         string currentFilter,
+                                         string searchString,
+                                         int? pageNumber)
         {
-            var music_Store_Warehouse_AppContext = _context.Instrument.Include(i => i.Category).Include(i => i.Supplier);
-            return View(await music_Store_Warehouse_AppContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            IQueryable<Instrument> instruments = _context.Instrument.Include(i => i.Category).Include(i => i.Supplier);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                instruments = instruments.Where(s => s.Name.Contains(searchString)
+                                       || s.Supplier.Name.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    instruments = instruments.OrderByDescending(s => s.Name);
+                    break;
+                case "Price":
+                    instruments = instruments.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    instruments = instruments.OrderByDescending(s => s.Price);
+                    break;
+                default:
+                    instruments = instruments.OrderBy(s => s.Name);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Instrument>.CreateAsync(instruments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Instruments/Details/5

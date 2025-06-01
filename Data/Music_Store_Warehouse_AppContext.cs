@@ -24,7 +24,7 @@ namespace Music_Store_Warehouse_App.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder      //kaskadowe usuwanie dzieci przy usunięciu rodzica, czyli cech instrumentu
+            modelBuilder //kaskadowe usuwanie dzieci przy usunięciu rodzica, czyli cech instrumentu
                 .Entity<Instrument>()
                 .HasMany(i => i.InstrumentFeatures)
                 .WithOne(f => f.Instrument)
