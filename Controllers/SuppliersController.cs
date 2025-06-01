@@ -56,8 +56,7 @@ namespace Music_Store_Warehouse_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Email," +
-            "Adress.Street,Adress.City,Adress.PostalCode")] Supplier supplier)
+        public async Task<IActionResult> Create(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +75,9 @@ namespace Music_Store_Warehouse_App.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Supplier.FindAsync(id);
+            var supplier = await _context.Supplier
+                .Include(a => a.Address)    //Dolejamy adres, ponieważ ten edit ma modyfikować i dostawcę i adres
+                .FirstOrDefaultAsync(s => s.SupplierId == id); 
             if (supplier == null)
             {
                 return NotFound();
@@ -89,8 +90,7 @@ namespace Music_Store_Warehouse_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Email," +
-            "Adress.Street,Adress.City,Adress.PostalCode")] Supplier supplier)
+        public async Task<IActionResult> Edit(int id, Supplier supplier) //Brak bindowania ponieważ nie działało przesłanie Address i jego pól
         {
             if (id != supplier.SupplierId)
             {
@@ -101,8 +101,37 @@ namespace Music_Store_Warehouse_App.Controllers
             {
                 try
                 {
-                    _context.Update(supplier);
+                    // Pobierz z bazy istniejący Supplier wraz z powiązanym Address
+                    var existing = await _context.Supplier
+                                                 .Include(s => s.Address)
+                                                 .FirstOrDefaultAsync(s => s.SupplierId == id);
+                    if (existing == null)
+                        return NotFound();
+
+                    // Zaktualizuj pola dostawcy
+                    existing.Name = supplier.Name;
+                    existing.Email = supplier.Email;
+
+                    // Jeżeli Address bywa null, utwórz nowy:
+                    if (existing.Address == null)
+                    {
+                        existing.Address = new Address();
+                        existing.Address.SupplierId = existing.SupplierId;
+                    }
+
+                    // Zaktualizuj pola istniejącego Address
+                    existing.Address.Street = supplier.Address.Street;
+                    existing.Address.City = supplier.Address.City;
+                    existing.Address.PostalCode = supplier.Address.PostalCode;
+
+                    // Teraz EF Core zrozumie, że:
+                    // - dostawca istnieje → zmienia tylko jego kolumny
+                    // - Address istnieje (ma ustawione AddressId i SupplierId) → zmienia tylko kolumny Street/City/PostalCode
+                    // Nie będzie próbował wstawić nowego wiersza do tabeli Address.
+
+                    _context.Update(existing);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {

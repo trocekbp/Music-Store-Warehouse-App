@@ -11,10 +11,10 @@ namespace Music_Store_Warehouse_App.Models
         public string Email { get; set; }
 
         // Nawigacja
-        [ValidateNever]
         public Address Address { get; set; }
 
         // Relacja 1:n — Dostawca ma wiele instrumentów
+        [ValidateNever]
         public ICollection<Instrument> Instruments { get; set; }
     }
 
