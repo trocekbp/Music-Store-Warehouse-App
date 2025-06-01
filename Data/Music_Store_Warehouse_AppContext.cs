@@ -38,6 +38,14 @@ namespace Music_Store_Warehouse_App.Data
                  .WithOne(a => a.Supplier)
                  .HasForeignKey<Address>(a => a.SupplierId)
                  .OnDelete(DeleteBehavior.Cascade);
+
+            //w przypadku usunięcia dostawcy, dla instrumentów ustawiamy dostawcę na NUll
+            modelBuilder
+                .Entity<Instrument>()
+                .HasOne(i => i.Supplier)
+                .WithMany(s => s.Instruments)
+                .HasForeignKey(i => i.SupplierId)
+                .OnDelete(DeleteBehavior.SetNull);  //w przypadku usunięcia dostawcy, dla instrumentów ustawiamy dostawcę na NUll
         }
     }
 }
