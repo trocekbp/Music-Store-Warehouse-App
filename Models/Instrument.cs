@@ -20,11 +20,6 @@ namespace Music_Store_Warehouse_App.Models
         public decimal Price { get; set; }
         [DisplayName("Opis")]
         public string Description { get; set; }
-        [DisplayName("Ilość")]
-
-        [Required(ErrorMessage = "Ilość jest wymagana")]
-        [Range(0, int.MaxValue, ErrorMessage = "Ilość nie może być ujemna")]
-        public int Quantity { get; set; }
 
         // Kod kreskowy – do skanowania lub importu z producenta
         [DisplayName("Kod ean")]
@@ -53,6 +48,10 @@ namespace Music_Store_Warehouse_App.Models
 
         // Nawigacja do przypisanych cech
         public ICollection<InstrumentFeature>? InstrumentFeatures { get; set; }
+
+        //Nawigacja do stanu na magazynie
+        [ValidateNever]
+        public InstrumentInventory Inventory { get; set; }
     }
 
 }

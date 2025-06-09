@@ -96,7 +96,7 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Legendarny gitarowy klasyk",
                         EAN = "0123456789012",
                         SKU = "FSTRAT2025",
-                        Quantity = 100,
+                        
                         SupplierId = 1,
                         CategoryId = 1   // Gitary
                     },
@@ -107,7 +107,7 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Perkusja akustyczna 5-elementowa",
                         EAN = "0987654321098",
                         SKU = "YSTAGE2025",
-                        Quantity = 100,
+                        
                         SupplierId = 2,
                         CategoryId = 2   // Perkusje
                     },
@@ -120,7 +120,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce z włoską duszą",
                         EAN = "4000000000001",
                         SKU = "SKRYP1",
-                        Quantity = 20,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -131,7 +130,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Ręcznie robione polskie skrzypce",
                         EAN = "4000000000002",
                         SKU = "SKRYP2",
-                        Quantity = 15,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -142,7 +140,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce przeznaczone na scenę",
                         EAN = "4000000000003",
                         SKU = "SKRYP3",
-                        Quantity = 5,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -153,7 +150,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Idealne na naukę i zajęcia w szkole",
                         EAN = "4000000000004",
                         SKU = "SKRYP4",
-                        Quantity = 30,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -164,7 +160,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Replika instrumentu barokowego",
                         EAN = "4000000000005",
                         SKU = "SKRYP5",
-                        Quantity = 4,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -175,7 +170,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Nowoczesne skrzypce elektryczne",
                         EAN = "4000000000006",
                         SKU = "SKRYP6",
-                        Quantity = 10,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -186,7 +180,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce w rozmiarze 1/2 dla dzieci",
                         EAN = "4000000000007",
                         SKU = "SKRYP7",
-                        Quantity = 12,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -197,7 +190,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce w rozmiarze 3/4 dla młodzieży",
                         EAN = "4000000000008",
                         SKU = "SKRYP8",
-                        Quantity = 14,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -208,7 +200,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce wyprodukowane w USA",
                         EAN = "4000000000009",
                         SKU = "SKRYP9",
-                        Quantity = 7,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -219,7 +210,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Skrzypce z francuskim brzmieniem",
                         EAN = "4000000000010",
                         SKU = "SKRYP10",
-                        Quantity = 6,
                         SupplierId = 3,
                         CategoryId = 4
                     },
@@ -232,7 +222,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Klasyczny flet poprzeczny",
                         EAN = "5000000000001",
                         SKU = "FLET1",
-                        Quantity = 8,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -243,7 +232,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Profesjonalny saksofon altowy",
                         EAN = "5000000000002",
                         SKU = "SAKS2",
-                        Quantity = 5,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -254,7 +242,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Klarnet Bb do jazzu i klasyki",
                         EAN = "5000000000003",
                         SKU = "KLAR3",
-                        Quantity = 10,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -265,7 +252,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Trąbka Bb z niklowanym wykończeniem",
                         EAN = "5000000000004",
                         SKU = "TRAB4",
-                        Quantity = 7,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -276,7 +262,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Puzon tenorowy wykonany z mosiądzu",
                         EAN = "5000000000005",
                         SKU = "PUZN5",
-                        Quantity = 6,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -287,7 +272,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Flet piccolo dla zaawansowanych",
                         EAN = "5000000000006",
                         SKU = "PICCO6",
-                        Quantity = 4,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -298,7 +282,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Obój z drewna grenadillowego",
                         EAN = "5000000000007",
                         SKU = "OBOJ7",
-                        Quantity = 3,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -309,7 +292,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Fagot do orkiestry symfonicznej",
                         EAN = "5000000000008",
                         SKU = "FAGOT8",
-                        Quantity = 2,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -320,7 +302,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Trąbka kluczowa do muzyki klasycznej",
                         EAN = "5000000000009",
                         SKU = "TRAK9",
-                        Quantity = 4,
                         SupplierId = 4,
                         CategoryId = 5
                     },
@@ -331,7 +312,6 @@ namespace Music_Store_Warehouse_App.Data
                         Description = "Sakshorn z posrebrzanym wykończeniem",
                         EAN = "5000000000010",
                         SKU = "SAKH10",
-                        Quantity = 3,
                         SupplierId = 4,
                         CategoryId = 5
                     }
@@ -455,7 +435,25 @@ namespace Music_Store_Warehouse_App.Data
                         }
                     }
                     // Kategoria "Inne" – pomijamy (brak cech)
+                    context.SaveChanges();
                 }
+
+                    // 8) InstrumentInventory – inicjalizacja stanu magazynowego 
+                    var firstTen = context.Instrument
+                        .OrderBy(i => i.InstrumentId)
+                        .Take(10)
+                        .ToList();
+
+                    foreach (var item in firstTen)
+                    {
+                        context.InstrumentInventory.Add(new InstrumentInventory
+                        {
+                            InstrumentId = item.InstrumentId,
+                            Quantity = 10,                
+                            LastUpdated = DateTime.UtcNow
+                        });
+                    }
+                
 
                 context.SaveChanges();
             }

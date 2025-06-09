@@ -41,6 +41,9 @@
                 <span asp-validation-for="SKU" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" asp-for="Inventory.InstrumentInventoryId" /> 
+                <input type="hidden" asp-for="Inventory.InstrumentId" />
+
                 <label asp-for="Inventory.Quantity" class="control-label"></label>
                 <input asp-for="Inventory.Quantity" class="form-control" />
                 <span asp-validation-for="Inventory.Quantity" class="text-danger"></span>
@@ -60,7 +63,7 @@
             </div>
         </div>
 
-        <div class="col-md-2"> 
+        <div class="col-md-2">
             <!-- rozdzielacz -->
         </div>
         <div class="col-md-6">

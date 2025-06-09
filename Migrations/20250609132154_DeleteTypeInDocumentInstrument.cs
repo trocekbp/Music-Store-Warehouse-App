@@ -5,7 +5,7 @@
 namespace Music_Store_Warehouse_App.Migrations
 {
     /// <inheritdoc />
-    public partial class EnableCascadeDelete_InstrumentFeatures : Migration
+    public partial class DeleteTypeInDocumentInstrument : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

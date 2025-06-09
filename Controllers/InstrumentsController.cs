@@ -51,7 +51,10 @@ namespace Music_Store_Warehouse_App.Controllers
             ViewData["CategoryList"] = new SelectList(categories, "CategoryId", "Name", categoryId);
             ViewData["CurrentCategory"] = categoryId; // by wiedzieć, która opcja ma być selected
 
-            IQueryable<Instrument> instruments = _context.Instrument.Include(i => i.Category).Include(i => i.Supplier);
+            IQueryable<Instrument> instruments = _context.Instrument
+                                                .Include(i => i.Category)
+                                                .Include(i => i.Inventory)
+                                                .Include(i => i.Supplier);
 
             // --- Filtrowanie po wyszukiwanej frazie ---
             if (!String.IsNullOrEmpty(searchString))
@@ -98,6 +101,7 @@ namespace Music_Store_Warehouse_App.Controllers
             var instrument = await _context.Instrument
                 .Include(i => i.Category)
                 .Include(i => i.Supplier)
+                .Include( i => i.Inventory)
                 .Include(i => i.InstrumentFeatures)
                     .ThenInclude(ifeat => ifeat.FeatureDefinition) // ThenInclude - jeszcze dołączamy definicje cech
                 .FirstOrDefaultAsync(m => m.InstrumentId == id);

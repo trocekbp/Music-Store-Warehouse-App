@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Music_Store_Warehouse_App.Models;
 
+
 namespace Music_Store_Warehouse_App.Data
 {
     public class Music_Store_Warehouse_AppContext : DbContext
@@ -21,6 +22,9 @@ namespace Music_Store_Warehouse_App.Data
         public DbSet<Address> Address { get; set; } = default!;
         public DbSet<FeatureDefinition> FeatureDefinition { get; set; } = default!;
         public DbSet<InstrumentFeature> InstrumentFeature { get; set; } = default!;
+        public DbSet<Models.Document> Document { get; set; } = default!;
+        public DbSet<DocumentInstrument> DocumentInstrument { get; set; } = default!;
+        public DbSet<InstrumentInventory> InstrumentInventory { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,6 +50,14 @@ namespace Music_Store_Warehouse_App.Data
                 .WithMany(s => s.Instruments)
                 .HasForeignKey(i => i.SupplierId)
                 .OnDelete(DeleteBehavior.SetNull);  //w przypadku usunięcia dostawcy, dla instrumentów ustawiamy dostawcę na NUll
+
+            //Relacja jeden do jednego instrumentu oraz Encji zapasu w magazynie
+            modelBuilder.Entity<Instrument>()
+              .HasOne(i => i.Inventory)
+              .WithOne(ii => ii.Instrument)
+              .HasForeignKey<InstrumentInventory>(ii => ii.InstrumentId)
+            // usunięcie InstrumentInventory nie skasuje Instrument:
+            .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
