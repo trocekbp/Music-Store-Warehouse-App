@@ -68,9 +68,10 @@
             <th>
                 @Html.DisplayNameFor(model => model[0].SKU)
             </th>
+     @*        Od wejśca rozszerzonej wersji ilość jest wyświetlana w controlerze magazyny - InstrumentInventoriesControler
             <th>
                 @Html.DisplayNameFor(model => model[0].Inventory.Quantity)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model[0].Supplier)
             </th>
@@ -99,9 +100,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.SKU)
                 </td>
-                <td>
+@*                 <td>
                     @Html.DisplayFor(modelItem => item.Inventory.Quantity)
-                </td>
+                </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.Supplier.Name)
                 </td>
@@ -109,9 +110,10 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td style>
-                    <a asp-action="Edit" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-primary">Edytuj</a> |
-                    <a asp-action="Details" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-info">Szczegóły</a> |
-                    <a asp-action="Delete" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-danger">Usuń</a>
+                    @* Wyłączone po stronie użytkownika, będzie aktywne gdy pojawi się logowanie admina*@
+                    @* <a asp-action="Edit" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-primary">Edytuj</a> | *@
+                    <a asp-action="Details" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-info">Szczegóły</a> 
+                    @* <a asp-action="Delete" asp-route-id="@item.InstrumentId" class="btn btn-sm btn-danger">Usuń</a> *@
                 </td>
             </tr>
         }

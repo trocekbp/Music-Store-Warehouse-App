@@ -97,7 +97,18 @@ namespace Music_Store_Warehouse_App.Controllers
                 foreach (var item in document.DocumentInstruments) {
                     var instrumentInventory = _context.InstrumentInventory
                                     .FirstOrDefault(i => i.InstrumentId == item.InstrumentId);
-                    instrumentInventory.Quantity += item.Quantity;
+                    if (instrumentInventory == null)
+                    {
+                        _context.InstrumentInventory.Add(new InstrumentInventory() //Jeśli jeszcze nie ma takiego instrumentu w magazynie
+                        {
+                            InstrumentId = item.InstrumentId,
+                            Quantity = item.Quantity
+                        });
+                    }
+                    else {
+                        instrumentInventory.Quantity += item.Quantity;
+                    }
+                
                 }
                 _context.Add(document);
                 //Aktualizacja stanu magazynowego
@@ -105,6 +116,7 @@ namespace Music_Store_Warehouse_App.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(document);
         }
 
