@@ -27,7 +27,8 @@ namespace Music_Store_Warehouse_App.Controllers
             string currentFilter,
             string searchString,
             int? pageNumber,
-            int? categoryId)
+            int? categoryId,
+            int? supplierId)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -47,9 +48,15 @@ namespace Music_Store_Warehouse_App.Controllers
                            .OrderBy(c => c.Name)
                            .ToListAsync();
 
+            var suppliers = await _context.Supplier
+                            .OrderBy(s => s.Name)
+                            .ToListAsync();
 
             ViewData["CategoryList"] = new SelectList(categories, "CategoryId", "Name", categoryId);
             ViewData["CurrentCategory"] = categoryId; // by wiedzieć, która opcja ma być selected
+
+            ViewData["SupplierList"] = new SelectList(suppliers, "SupplierId", "Name", supplierId);
+            ViewData["CurrentSupplier"] = supplierId; // by wiedzieć, która opcja ma być selected
 
             IQueryable<Instrument> instruments = _context.Instrument
                                                 .Include(i => i.Category)
@@ -68,6 +75,11 @@ namespace Music_Store_Warehouse_App.Controllers
             if (categoryId.HasValue)
             {
                 instruments = instruments.Where(i => i.CategoryId == categoryId.Value);
+            }
+
+            if (supplierId.HasValue)
+            {
+                instruments = instruments.Where(i => i.SupplierId == supplierId.Value);
             }
 
             switch (sortOrder)
@@ -221,8 +233,7 @@ namespace Music_Store_Warehouse_App.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", instrument.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Supplier, "SupplierId", "SupplierId", instrument.SupplierId);
+            PrepareViewBags();
             return View(instrument);
         }
 

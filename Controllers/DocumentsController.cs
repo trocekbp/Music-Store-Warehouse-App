@@ -25,6 +25,7 @@ namespace Music_Store_Warehouse_App.Controllers
             return View(await _context.Document
                 .Include(i => i.DocumentInstruments)
                     .ThenInclude(instr => instr.Instrument)
+                .OrderByDescending(doc => doc.Date)
                 .ToListAsync());
         }
 

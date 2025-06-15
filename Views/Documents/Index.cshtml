@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Dokumenty</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -40,7 +40,7 @@
                     @(item.DocumentInstruments?.Sum(i => i.Quantity) ?? 0)
             </td>
             <td>
-                @(item.DocumentInstruments?.Sum(i => i.Instrument.Price) ?? 0)
+                @(item.DocumentInstruments?.Sum(i => i.Instrument.Price * i.Quantity) ?? 0)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DocumentId">Edit</a> |

@@ -2,10 +2,10 @@
 @model PaginatedList<Music_Store_Warehouse_App.Models.Instrument>
 
 @{
-    ViewData["Title"] = "Asortyment";
+    ViewData["Title"] = "Magazyn";
 }
 
-<h1>Asortyment</h1>
+<h1>Magazyn</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-sm btn-success">Przyjęcie Zewnętrzne</a>
@@ -35,6 +35,22 @@
                 {
                     <option value="@cat.Value" selected="@(cat.Selected ? "selected" : null)">
                         @cat.Text
+                    </option>
+                }
+            </select>
+        </label>
+        <!-- Dropdown dostawców -->
+        <label class="ml-3 mr-2">
+            dostawca:
+            <select name="supplierId"
+                    id="supplierId"
+                    class="form-control form-control-sm ml-1"
+                    style="width: 180px;">
+                <option value="">Wszyscy</option>
+                @foreach (SelectListItem sup in (SelectList)ViewData["SupplierList"])
+                {
+                    <option value="@sup.Value" selected="@(sup.Selected ? "selected" : null)">
+                        @sup.Text
                     </option>
                 }
             </select>

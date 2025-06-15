@@ -28,7 +28,8 @@ namespace Music_Store_Warehouse_App.Controllers
             string currentFilter,
             string searchString,
             int? pageNumber,
-            int? categoryId)
+            int? categoryId,
+            int? supplierId)
         {
                 ViewData["CurrentSort"] = sortOrder;
                 ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -48,11 +49,17 @@ namespace Music_Store_Warehouse_App.Controllers
                                .OrderBy(c => c.Name)
                                .ToListAsync();
 
+                var suppliers = await _context.Supplier
+                            .OrderBy(s => s.Name)
+                            .ToListAsync();
 
                 ViewData["CategoryList"] = new SelectList(categories, "CategoryId", "Name", categoryId);
                 ViewData["CurrentCategory"] = categoryId; // by wiedzieć, która opcja ma być selected
 
-                IQueryable<Instrument> instruments = _context.Instrument // instruments =  INSTRUMENTS IN INVENTORY !!!
+                ViewData["SupplierList"] = new SelectList(suppliers, "SupplierId", "Name", supplierId);
+                ViewData["CurrentSupplier"] = supplierId; // by wiedzieć, która opcja ma być selected
+
+            IQueryable<Instrument> instruments = _context.Instrument // instruments =  INSTRUMENTS IN INVENTORY !!!
                                                     .Include(i => i.Category)
                                                     .Include(i => i.Inventory)
                                                     .Include(i => i.Supplier)
@@ -72,7 +79,12 @@ namespace Music_Store_Warehouse_App.Controllers
                     instruments = instruments.Where(i => i.CategoryId == categoryId.Value);
                 }
 
-                switch (sortOrder)
+                if (supplierId.HasValue)
+                {
+                    instruments = instruments.Where(i => i.SupplierId == supplierId.Value);
+                }
+
+            switch (sortOrder)
                 {
                     case "name_desc":
                         instruments = instruments.OrderByDescending(s => s.Name);
@@ -200,8 +212,13 @@ namespace Music_Store_Warehouse_App.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", instrument.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Supplier, "SupplierId", "SupplierId", instrument.SupplierId);
+
+            ViewBag.SupplierList = new SelectList(
+               _context.Supplier, "SupplierId", "Name");
+
+            ViewBag.CategoryList = new SelectList(
+                _context.Category, "CategoryId", "Name");
+
             return View(instrument);
         }
 
@@ -266,7 +283,9 @@ namespace Music_Store_Warehouse_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instrumentInventory = await _context.InstrumentInventory.FindAsync(id);
+            var instrumentInventory = await _context.InstrumentInventory
+                                     .Include(i => i.Instrument)
+                                    .FirstOrDefaultAsync(m => m.InstrumentId == id); ;
             if (instrumentInventory != null)
             {
                 _context.InstrumentInventory.Remove(instrumentInventory);
