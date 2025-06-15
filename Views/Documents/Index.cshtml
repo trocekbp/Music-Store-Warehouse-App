@@ -18,17 +18,29 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
+            <th>
+                @Html.DisplayName("Ilość artykułów")
+            </th>
+            <th>
+                @Html.DisplayName("Wartość artykułów")
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model) {
+            <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                    @(item.DocumentInstruments?.Sum(i => i.Quantity) ?? 0)
+            </td>
+            <td>
+                @(item.DocumentInstruments?.Sum(i => i.Instrument.Price) ?? 0)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DocumentId">Edit</a> |

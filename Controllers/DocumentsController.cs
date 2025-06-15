@@ -22,7 +22,10 @@ namespace Music_Store_Warehouse_App.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Document.ToListAsync());
+            return View(await _context.Document
+                .Include(i => i.DocumentInstruments)
+                    .ThenInclude(instr => instr.Instrument)
+                .ToListAsync());
         }
 
         // GET: Documents/Details/5
@@ -34,11 +37,31 @@ namespace Music_Store_Warehouse_App.Controllers
             }
 
             var document = await _context.Document
+                .Include(i => i.DocumentInstruments)
+                    .ThenInclude(d => d.Instrument)
+                        .ThenInclude(c => c.Category)
+                 .Include(i => i.DocumentInstruments)
+                    .ThenInclude(d => d.Instrument)
+                        .ThenInclude(s => s.Supplier)
                 .FirstOrDefaultAsync(m => m.DocumentId == id);
+
+            
+
             if (document == null)
             {
                 return NotFound();
             }
+
+            var supplierId = document.DocumentInstruments
+                               .Select(di => di.Instrument?.Supplier?.SupplierId)
+                               .FirstOrDefault();
+
+            var supplier = await _context.Supplier
+                                         .Include(s => s.Address)
+                                         .FirstOrDefaultAsync(s => s.SupplierId == supplierId);
+            
+
+                        ViewBag.Supplier = supplier;
 
             return View(document);
         }

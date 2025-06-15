@@ -252,7 +252,7 @@ namespace Music_Store_Warehouse_App.Controllers
 
             var instrumentInventory = await _context.InstrumentInventory
                 .Include(i => i.Instrument)
-                .FirstOrDefaultAsync(m => m.InstrumentInventoryId == id);
+                .FirstOrDefaultAsync(m => m.InstrumentId == id);
             if (instrumentInventory == null)
             {
                 return NotFound();
